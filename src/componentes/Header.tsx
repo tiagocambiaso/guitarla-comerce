@@ -1,18 +1,21 @@
-import { CartItem, Guitar } from '../types'
+import { Dispatch } from 'react'
+import { CartItem } from '../types'
+import { useMemo } from 'react'
+import type { CartActions } from '../reducers/cart-reducer.ts'
 
 type HeaderProps = {
     cart: CartItem[],
-    removeFromCart: (id: Guitar['id']) => void,
-    increaseQuantity: (id: Guitar['id']) => void,
-    decreaseQuantity: (id: Guitar['id']) => void,
-    cleanCart: () => void,
-    isEmpty: boolean,
-    cartTotal: number
+    dispatch: Dispatch<CartActions>
+    
     
 }
 
 // Fijate acá: agregué las llaves { } alrededor de cart
-function Header({ cart, removeFromCart, increaseQuantity, decreaseQuantity, cleanCart, isEmpty, cartTotal } : HeaderProps) { 
+function Header({ cart, dispatch } : HeaderProps) { 
+
+    // state derivado
+    const isEmpty = useMemo(() => cart.length === 0, [cart]) // Solo se recalcula cuando 'cart' cambia.
+    const cartTotal = useMemo(() => cart.reduce ((total, item) => total + (item.quantity * item.price), 0), [cart])
 
     return (
         <header className="py-5 header">
@@ -56,7 +59,7 @@ function Header({ cart, removeFromCart, increaseQuantity, decreaseQuantity, clea
                                                         <button 
                                                             type="button" 
                                                             className="btn btn-dark"
-                                                            onClick= {() => decreaseQuantity(guitar.id)}
+                                                            onClick= {() => dispatch({type: 'decrease-quantity', payload: {id: guitar.id}})}
                                                         >
                                                             -
                                                         </button>
@@ -64,7 +67,7 @@ function Header({ cart, removeFromCart, increaseQuantity, decreaseQuantity, clea
                                                         <button 
                                                             type="button" 
                                                             className="btn btn-dark"
-                                                            onClick={() => increaseQuantity(guitar.id)}
+                                                            onClick={() => dispatch({type: 'increase-quantity', payload: {id: guitar.id}})}
                                                         >
                                                             +
                                                         </button>
@@ -73,7 +76,7 @@ function Header({ cart, removeFromCart, increaseQuantity, decreaseQuantity, clea
                                                         <button
                                                             className="btn btn-danger" 
                                                             type="button"
-                                                            onClick= {() => removeFromCart(guitar.id)}
+                                                            onClick= {() => dispatch({type: 'remove-from-cart', payload: {id: guitar.id} })}
                                                         >
                                                            
                                                             X
@@ -85,11 +88,11 @@ function Header({ cart, removeFromCart, increaseQuantity, decreaseQuantity, clea
                                       </table>
                                     
                                     <p className="text-end">Total pagar: <span className="fw-bold">${cartTotal}</span></p>
-                                </>       
+                                </>         
                                 )}
                                 <button 
                                     className="btn btn-dark w-100 mt-3 p-2"
-                                    onClick= {cleanCart}
+                                    onClick= {() => dispatch({type: 'clear-cart'})}
                                 >
                                     Vaciar Carrito
                                 </button>

@@ -1,73 +1,30 @@
-# React + TypeScript + Vite
+# 🎸 GuitarLA - Guitar E-commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern and interactive e-commerce project for selling guitars, built with **React** and **TypeScript**. This project features a fully functional shopping cart with data persistence and a centralized state architecture.
 
-Currently, two official plugins are available:
+## ✨ Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* **Dynamic Cart Management:** Users can add guitars, and increase (+) or decrease (-) the quantity of each item with controlled maximum limits.
+* **Total User Control:** Option to remove individual items from the cart (❌) or clear the entire cart with a single click.
+* **Data Persistence:** Native integration with `localStorage`. Users won't lose their selected items if they close or refresh the page.
+* **Real-time Calculations:** The total price and item subtotal are automatically and efficiently updated.
 
-## React Compiler
+## 🛠️ Technologies and Tools
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Core:** React 18 + TypeScript + Vite.
+* **Styling:** Tailwind CSS (v4).
+* **Deployment:** Vercel / GitHub Pages.
 
-## Expanding the ESLint configuration
+## 🧠 Concepts and Architecture (React Hooks)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The project is built applying React best practices, strictly separating logic from the UI:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* **`useReducer`:** Used to centralize all complex cart logic (add, remove, clear) via actions and a *dispatch* function, eliminating *prop drilling* and significantly improving code scalability.
+* **`useState` & `useEffect`:** For initial state management and continuous data synchronization with the browser's API (`localStorage`).
+* **`useMemo`:** Implemented to memorize heavy calculations (like the cart total) and prevent unnecessary re-renders, boosting the application's performance.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 How to run the project locally
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Clone this repository:
+   ```bash
+   git clone [https://guitarla-comerce.vercel.app]

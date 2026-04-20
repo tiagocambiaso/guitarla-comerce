@@ -1,30 +1,33 @@
+import { useReducer, useEffect } from "react"
 import Header from "./componentes/Header"
 import Guitar from "./componentes/Guitar"
-import { useCart } from "./hooks/useCart.ts"
+import { cartReducer, inicialState } from "./reducers/cart-reducer.ts"
 
 function App() {
-  const { data, cart, addToCart, removeFromCart, decreaseQuantity, increaseQuantity, cleanCart, isEmpty, cartTotal} = useCart()
-    return (
+
+  const [state, dispatch] = useReducer(cartReducer, inicialState)
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(state.cart))
+  }, [state.cart])
+
+  
+  return (
     <>
       <Header 
-        cart={cart}
-        removeFromCart={removeFromCart}
-        increaseQuantity={increaseQuantity}
-        decreaseQuantity={decreaseQuantity}
-        cleanCart={cleanCart}
-        isEmpty={isEmpty}
-        cartTotal={cartTotal}
+        cart={state.cart}
+        dispatch={dispatch}
       />
       <main className="container-xl mt-5">
           <h2 className="text-center">Nuestra Colección</h2>
 
           <div className="row mt-5">
               
-              {data.map((guitar) => (  // 4. RENDERIZADO (.map): El bucle de React. Dibuja un componente por cada guitarra.
+              {state.data.map((guitar) => (  // 4. RENDERIZADO (.map): El bucle de React. Dibuja un componente por cada guitarra.
                   <Guitar 
                     key={guitar.id}    // DNI único del componente para que React sepa cuál es cuál.
                     guitar={guitar}    // 5. PROPS: Le pasamos los datos al componente hijo...
-                    addToCart={addToCart} // ... el botón del hijo pueda avisarle al padre del click.
+                    dispatch={dispatch} // ... el botón del hijo pueda avisarle al padre del click.
                   />
               ))}
               
